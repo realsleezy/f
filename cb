@@ -1,0 +1,46 @@
+local Camera = workspace.CurrentCamera
+Holding = false
+function findNets()
+    for i, v in pairs(workspace:GetDescendants()) do
+        if v.Name == "Net" then
+            v.Parent = workspace
+        end
+    end
+end
+local function findClosestPart(position)
+    local closestPart, closestPartMagnitude
+    local tmpMagnitude
+    for i, v in pairs(workspace:GetChildren()) do
+        if v.Name == "Net" then
+            if closestPart then
+                tmpMagnitude = (position - v.Position).magnitude
+                if tmpMagnitude < closestPartMagnitude then
+                    closestPart = v
+                    closestPartMagnitude = tmpMagnitude
+                end
+            else
+                closestPart = v
+                closestPartMagnitude = (position - v.Position).magnitude
+            end
+        end
+    end
+    return closestPart
+end
+findNets()
+local UIS = game:GetService('UserInputService')
+UIS.InputBegan:connect(function(Input, GPE)
+    if not GPE and Input.KeyCode == Enum.KeyCode.Space then
+        local lookthat = findClosestPart(game.Players.LocalPlayer.Character.Torso.Position)
+        Holding = true
+        repeat
+            wait()
+        Camera.CFrame = CFrame.new(Camera.CFrame.p, lookthat.Position + Vector3.new(0, 45, 0)) 
+        until Holding == false
+    end
+end)
+
+UIS.InputEnded:connect(function(Input, GPE)
+    if not GPE and Input.KeyCode == Enum.KeyCode.Space then
+        Holding = false
+    end
+end)
