@@ -113,7 +113,7 @@ UIS.InputBegan:connect(function(Input, GPE)
         Holding = true
         repeat
             wait()
-        Camera.CFrame = CFrame.new(Camera.CFrame.p, lookthat.Position + Vector3.new(0, 45, 0)) 
+        Camera.CFrame = CFrame.new(Camera.CFrame.p, lookthat.Position + Vector3.new(0, 47, 0)) 
         until Holding == false
     end
 end)
