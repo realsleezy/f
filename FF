@@ -1,0 +1,43 @@
+getgenv().Longarms = value
+            if not getgenv().MTAPIMutex then loadstring(game:HttpGet("https://raw.githubusercontent.com/Trapzky/MTAPI/main/source", true))() end
+            
+            local plr = game.Players.LocalPlayer
+            local hook = nil
+            local enabled = false
+            
+            LPH_JIT_ULTRA(function()
+            plr.Character["Left Arm"]:AddPropertyEmulator("Size")
+            plr.Character["Right Arm"]:AddPropertyEmulator("Size")
+        end)()
+            
+            game:GetService("UserInputService").InputBegan:Connect(function(key, gpe)
+                if not enabled and not gpe and key.KeyCode == Enum.KeyCode.J and getgenv().Longarms then
+                    for i,v in pairs(getconnections(plr.Character["Left Arm"]:GetPropertyChangedSignal("Size"))) do
+                        v.Function = error
+                        v:Disable() -- disable property changed
+                    end
+                    for i,v in pairs(getconnections(plr.Character["Right Arm"]:GetPropertyChangedSignal("Size"))) do
+                        v.Function = error
+                        v:Disable() -- disable property changed
+                    end
+            
+                    plr.Character["Left Arm"].Size = Vector3.new(20, 3, 1)
+                    plr.Character["Right Arm"].Size = Vector3.new(20, 3, 1)
+                    plr.Character["Left Arm"].Massless = true
+                    plr.Character["Right Arm"].Massless = true
+                    enabled = true
+                elseif enabled and not gpe and key.KeyCode == Enum.KeyCode.J and getgenv().Longarms then
+                    for i,v in pairs(getconnections(plr.Character["Left Arm"]:GetPropertyChangedSignal("Size"))) do
+                        v.Function = error
+                        v:Disable() -- disable property changed
+                    end
+                    for i,v in pairs(getconnections(plr.Character["Right Arm"]:GetPropertyChangedSignal("Size"))) do
+                        v.Function = error
+                        v:Disable() -- disable property changed
+                    end
+            
+                    plr.Character["Left Arm"].Size = Vector3.new(1, 2, 1)
+                    plr.Character["Right Arm"].Size = Vector3.new(1, 2, 1)
+                    enabled = false
+                end
+    end)
